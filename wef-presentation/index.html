@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapeCredit - WEF Style Presentation</title>
+    <link rel="stylesheet" href="wef_style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Investor Presentation Slides -->
+        <div class="slide" id="investor-title">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>World Economic Forum Style</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">CapeCredit</h1>
+                <h2 class="slide-subtitle">Transforming Risk into Opportunity</h2>
+                <p>AI-Powered Financial Inclusion for Cape Town's Informal Economy</p>
+                <div class="data-source">Investor Presentation</div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>Confidential</div>
+            </div>
+        </div>
+
+        <div class="slide" id="investor-opportunity">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>Market Opportunity</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">R3.5-4.2 Billion Untapped Market</h1>
+                
+                <div class="data-point">
+                    <div class="data-number">220,000+</div>
+                    <div class="data-label">Informal businesses in Cape Town (10.5% of national total)</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">33%</div>
+                    <div class="data-label">Currently have access to credit</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">29.5%</div>
+                    <div class="data-label">Annual growth of alternative lending market</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">82%</div>
+                    <div class="data-label">Smartphone penetration but only 23% using digital financial tools</div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="marketOpportunityChart"></canvas>
+                </div>
+                
+                <div class="data-source">Source: UNDP Policy Brief 2024, Business Wire 2024</div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>Confidential</div>
+            </div>
+        </div>
+
+        <div class="slide" id="investor-problem">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>The Problem</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">Why Traditional Finance Fails Informal Businesses</h1>
+                
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <div class="bar-label">Traditional Bank Access</div>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 7%;"></div>
+                        </div>
+                        <div class="bar-value">7%</div>
+                    </div>
+                    
+                    <div class="bar-item">
+                        <div class="bar-label">Rejected Due to Insufficient Collateral</div>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 76%;"></div>
+                        </div>
+                        <div class="bar-value">76%</div>
+                    </div>
+                    
+                    <div class="bar-item">
+                        <div class="bar-label">Default Rates for Unsecured Microloans</div>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 30%;"></div>
+                        </div>
+                        <div class="bar-value">27-32%</div>
+                    </div>
+                    
+                    <div class="bar-item">
+                        <div class="bar-label">Business Failure Rate (First 3 Years)</div>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 75%;"></div>
+                        </div>
+                        <div class="bar-value">70-80%</div>
+                    </div>
+                </div>
+                
+                <div class="data-source">Source: National Treasury 2023, UNDP 2024, South African Reserve Bank 2024, SME South Africa 2024</div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>Confidential</div>
+            </div>
+        </div>
+
+        <div class="slide" id="investor-solution">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>Our Solution</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">CapeCredit: AI-Powered Financial Inclusion</h1>
+                
+                <div class="comparison-chart">
+                    <div class="comparison-item">
+                        <div class="comparison-title">Traditional Approach</div>
+                        <div class="comparison-content">
+                            <ul>
+                                <li>Requires formal documentation</li>
+                                <li>High collateral requirements</li>
+                                <li>27-32% default rates</li>
+                                <li>Limited offline capability</li>
+                                <li>One-size-fits-all credit scoring</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-item">
+                        <div class="comparison-title">CapeCredit Approach</div>
+                        <div class="comparison-content">
+                            <ul>
+                                <li>Mobile-first with offline capability</li>
+                                <li>Alternative credit scoring</li>
+                                <li>37-42% lower default risk</li>
+                                <li>Complete formalization pathway</li>
+                                <li>Community-based network effects</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="data-source">Source: World Bank SME Finance Forum 2024</div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>Confidential</div>
+            </div>
+        </div>
+
+        <div class="slide" id="investor-risk">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>Risk Mitigation</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">Transforming Unbankable into Bankable</h1>
+                
+                <div class="chart-container">
+                    <canvas id="riskMitigationChart"></canvas>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">37-42%</div>
+                    <div class="data-label">Reduction in default rates vs traditional methods</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">12-18%</div>
+                    <div class="data-label">Interest rates vs 25-40% from informal lenders</div>
+                </div>
+                
+                <div class="data-source">Source: South African Reserve Bank 2024, World Bank 2023</div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>Confidential</div>
+            </div>
+        </div>
+
+        <div class="slide" id="investor-traction">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>Traction & Roadmap</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">From MVP to Market Leader</h1>
+                
+                <div class="chart-container">
+                    <canvas id="growthChart"></canvas>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">Current</div>
+                    <div class="data-label">MVP with 5,000+ users and R1.2M in facilitated loans</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">12 Months</div>
+                    <div class="data-label">75,000 users, R60M in loans, expansion to Johannesburg</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">24 Months</div>
+                    <div class="data-label">200,000 users, R250M in loans, additional African markets</div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>Confidential</div>
+            </div>
+        </div>
+
+        <div class="slide" id="investor-impact">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>Triple Bottom Line</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">Financial Returns with Social Impact</h1>
+                
+                <div class="chart-container">
+                    <canvas id="tripleBottomLineChart"></canvas>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">10x</div>
+                    <div class="data-label">Return potential with 37-42% lower default risk</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">6,700-9,800</div>
+                    <div class="data-label">Jobs created, 2.4x more than traditional approaches</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">R250M+</div>
+                    <div class="data-label">New capital with 47% higher growth rate for participating businesses</div>
+                </div>
+                
+                <div class="data-source">Source: African Development Bank 2024, IFC 2024</div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>Confidential</div>
+            </div>
+        </div>
+
+        <div class="slide" id="investor-cta">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>Call to Action</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">Join Us in Transforming Cape Town's Economy</h1>
+                
+                <p class="slide-subtitle">"Don't miss the opportunity to participate in the most democratizing wave of technology in the last 10 years"</p>
+                
+                <div class="qr-container">
+                    <div class="qr-code" id="investor-qr"></div>
+                    <div class="qr-text">
+                        <h3>Investment Timeline</h3>
+                        <p>Scan to access due diligence materials and investment process details</p>
+                    </div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">R15M</div>
+                    <div class="data-label">Seed round to scale proven MVP</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">18 Months</div>
+                    <div class="data-label">Clear path to Series A</div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>Confidential</div>
+            </div>
+        </div>
+
+        <!-- SME User Presentation Slides -->
+        <div class="slide" id="sme-title">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>World Economic Forum Style</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">CapeCredit</h1>
+                <h2 class="slide-subtitle">Grow Your Business, Secure Your Future</h2>
+                <p>Financial Tools for Cape Town's Entrepreneurs</p>
+                <div class="data-source">SME User Presentation</div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>For SME Users</div>
+            </div>
+        </div>
+
+        <div class="slide" id="sme-challenge">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>The Challenge</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">The Challenges We Face Together</h1>
+                
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <div class="bar-label">Limited Access to Affordable Financing</div>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 67%;"></div>
+                        </div>
+                        <div class="bar-value">67%</div>
+                    </div>
+                    
+                    <div class="bar-item">
+                        <div class="bar-label">High Cost of Informal Finance</div>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 35%;"></div>
+                        </div>
+                        <div class="bar-value">25-40%</div>
+                    </div>
+                    
+                    <div class="bar-item">
+                        <div class="bar-label">Rejected for Traditional Financing</div>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 76%;"></div>
+                        </div>
+                        <div class="bar-value">76%</div>
+                    </div>
+                    
+                    <div class="bar-item">
+                        <div class="bar-label">Business Failure Rate (First 3 Years)</div>
+                        <div class="bar-container">
+                            <div class="bar" style="width: 75%;"></div>
+                        </div>
+                        <div class="bar-value">70-80%</div>
+                    </div>
+                </div>
+                
+                <div class="data-source">Source: FinScope MSME 2024, National Treasury 2023</div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>For SME Users</div>
+            </div>
+        </div>
+
+        <div class="slide" id="sme-solution">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>How CapeCredit Helps</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">Your Business Partner in Your Pocket</h1>
+                
+                <div class="data-point">
+                    <div class="data-number">5-7</div>
+                    <div class="data-label">Hours saved weekly on administrative tasks</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">22%</div>
+                    <div class="data-label">Average profit leakage revealed in cash-only businesses</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">3.5x</div>
+                    <div class="data-label">Higher approval rates for previously rejected businesses</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">35%</div>
+                    <div class="data-label">Average revenue increase after formalization</div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="smeHelpChart"></canvas>
+                </div>
+                
+                <div class="data-source">Source: SME South Africa 2024, UNDP 2024</div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>For SME Users</div>
+            </div>
+        </div>
+
+        <div class="slide" id="sme-protection">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>Risk Protection</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">Safeguarding What You've Built</h1>
+                
+                <div class="comparison-chart">
+                    <div class="comparison-item">
+                        <div class="comparison-title">Without CapeCredit</div>
+                        <div class="comparison-content">
+                            <ul>
+                                <li>25-40% interest rates from informal lenders</li>
+                                <li>68% report cash flow as primary business risk</li>
+                                <li>High business failure rate (70-80% in 3 years)</li>
+                                <li>Personal assets at risk</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-item">
+                        <div class="comparison-title">With CapeCredit</div>
+                        <div class="comparison-content">
+                            <ul>
+                                <li>12-18% interest rates through platform</li>
+                                <li>Reduced cash flow risks through planning</li>
+                                <li>2.7x higher 3-year business survival rate</li>
+                                <li>Protection of personal assets</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="protectionChart"></canvas>
+                </div>
+                
+                <div class="data-source">Source: FinScope MSME 2024, Department of Small Business Development 2023</div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>For SME Users</div>
+            </div>
+        </div>
+
+        <div class="slide" id="sme-growth">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>Growth Opportunities</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">From Where You Are to Where You Want to Be</h1>
+                
+                <div class="chart-container">
+                    <canvas id="growthOpportunityChart"></canvas>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">19%</div>
+                    <div class="data-label">Average interest rate reduction</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">47%</div>
+                    <div class="data-label">Higher revenue growth over 24 months</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">35%</div>
+                    <div class="data-label">Revenue increase after formalization</div>
+                </div>
+                
+                <div class="data-source">Source: IFC 2024, National Treasury 2023</div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>For SME Users</div>
+            </div>
+        </div>
+
+        <div class="slide" id="sme-stories">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>Success Stories</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">People Like You, Success Like Yours</h1>
+                
+                <div class="comparison-chart">
+                    <div class="comparison-item">
+                        <div class="comparison-title">Thandi's Catering</div>
+                        <div class="comparison-content">
+                            <p><strong>Before:</strong> Rejected by 3 banks, using 35% interest informal loans</p>
+                            <p><strong>After:</strong> Qualified for R25,000 equipment loan at 12%</p>
+                            <p><strong>Result:</strong> Expanded to government contracts, hired 4 new employees</p>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-item">
+                        <div class="comparison-title">Joseph's Electronics</div>
+                        <div class="comparison-content">
+                            <p><strong>Before:</strong> Cash-only business, no financial records, weekly cash flow crises</p>
+                            <p><strong>After:</strong> Digital record-keeping revealed 22% profit leakage</p>
+                            <p><strong>Result:</strong> Stabilized operations, opened second location within 14 months</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comparison-chart">
+                    <div class="comparison-item" style="width: 100%;">
+                        <div class="comparison-title">Nomsa's Fashion</div>
+                        <div class="comparison-content">
+                            <p><strong>Before:</strong> Unable to secure premises lease without formal business status</p>
+                            <p><strong>After:</strong> Used guided formalization pathway to register business</p>
+                            <p><strong>Result:</strong> Secured prime retail location, grew from 1 to 8 employees in 18 months</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>For SME Users</div>
+            </div>
+        </div>
+
+        <div class="slide" id="sme-how">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>How It Works</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">Simple Steps to Start</h1>
+                
+                <div class="data-point">
+                    <div class="data-number">1</div>
+                    <div class="data-label">Download the free app (works on 82% of devices already owned by informal businesses)</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">2</div>
+                    <div class="data-label">Record your daily transactions (works offline for areas with 16% electricity access issues)</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">3</div>
+                    <div class="data-label">Receive your first business insights in 14 days (identifies average 22% profit leakage)</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">4</div>
+                    <div class="data-label">Access financing options in 30 days (3.5x higher approval rates)</div>
+                </div>
+                
+                <div class="data-source">Source: FinMark Trust 2024, UNDP 2024</div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>For SME Users</div>
+            </div>
+        </div>
+
+        <div class="slide" id="sme-cta">
+            <div class="slide-header">
+                <img src="logo.png" alt="CapeCredit Logo" class="slide-logo">
+                <div>Join Today</div>
+            </div>
+            <div class="slide-content">
+                <h1 class="slide-title">Don't Get Left Behind</h1>
+                
+                <p class="slide-subtitle">"Don't miss the opportunity to grow with the most powerful business tool in the last 10 years"</p>
+                
+                <div class="qr-container">
+                    <div class="qr-code" id="sme-qr"></div>
+                    <div class="qr-text">
+                        <h3>Download CapeCredit Today</h3>
+                        <p>Scan to download the app and join 220,000+ Cape Town SMEs</p>
+                        <p>Available in English and Xhosa</p>
+                    </div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">Free</div>
+                    <div class="data-label">Basic plan with record-keeping and insights</div>
+                </div>
+                
+                <div class="data-point">
+                    <div class="data-number">47%</div>
+                    <div class="data-label">Higher growth trajectory for CapeCredit users</div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>CapeCredit 2025</div>
+                <div>For SME Users</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-nav">
+        <button class="nav-button" id="prev-btn">←</button>
+        <button class="nav-button" id="next-btn">→</button>
+        <button class="nav-button" id="toggle-btn">⇄</button>
+    </div>
+
+    <script src="qr-generator.js"></script>
+    <script>
+        // Chart.js configurations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Market Opportunity Chart
+            const marketCtx = document.getElementById('marketOpportunityChart').getContext('2d');
+            new Chart(marketCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Traditional Banks', 'Microfinance', 'Mobile Money', 'Underserved'],
+                    datasets: [{
+                        label: 'Market Penetration (%)',
+                        data: [7, 18, 42, 85],
+                        backgroundColor: [
+                            'rgba(13, 110, 253, 0.7)',
+                            'rgba(13, 110, 253, 0.7)',
+                            'rgba(13, 110, 253, 0.7)',
+                            'rgba(13, 110, 253, 0.3)'
+                        ],
+                        borderColor: [
+                            'rgba(13, 110, 253, 1)',
+                            'rgba(13, 110, 253, 1)',
+                            'rgba(13, 110, 253, 1)',
+                            'rgba(13, 110, 253, 0.5)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Risk Mitigation Chart
+            const riskCtx = document.getElementById('riskMitigationChart').getContext('2d');
+            new Chart(riskCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Traditional Default Rate', 'CapeCredit Default Rate', 'Traditional Interest', 'CapeCredit Interest'],
+                    datasets: [{
+                        label: 'Percentage',
+                        data: [30, 18, 32.5, 15],
+                        backgroundColor: [
+                            'rgba(108, 117, 125, 0.7)',
+                            'rgba(13, 110, 253, 0.7)',
+                            'rgba(108, 117, 125, 0.7)',
+                            'rgba(13, 110, 253, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(108, 117, 125, 1)',
+                            'rgba(13, 110, 253, 1)',
+                            'rgba(108, 117, 125, 1)',
+                            'rgba(13, 110, 253, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 40,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Growth Chart
+            const growthCtx = document.getElementById('growthChart').getContext('2d');
+            new Chart(growthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Current', '6 Months', '12 Months', '24 Months'],
+                    datasets: [{
+                        label: 'Users',
+                        data: [5000, 25000, 75000, 200000],
+                        borderColor: 'rgba(13, 110, 253, 1)',
+                        backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Triple Bottom Line Chart
+            const tripleCtx = document.getElementById('tripleBottomLineChart').getContext('2d');
+            new Chart(tripleCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Financial Returns', 'Social Impact', 'Economic Development'],
+                    datasets: [{
+                        label: 'Traditional Finance',
+                        data: [6, 3, 4],
+                        backgroundColor: 'rgba(108, 117, 125, 0.2)',
+                        borderColor: 'rgba(108, 117, 125, 0.7)',
+                        pointBackgroundColor: 'rgba(108, 117, 125, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(108, 117, 125, 1)'
+                    }, {
+                        label: 'CapeCredit',
+                        data: [8, 9, 8],
+                        backgroundColor: 'rgba(13, 110, 253, 0.2)',
+                        borderColor: 'rgba(13, 110, 253, 0.7)',
+                        pointBackgroundColor: 'rgba(13, 110, 253, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(13, 110, 253, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+
+            // SME Help Chart
+            const smeHelpCtx = document.getElementById('smeHelpChart').getContext('2d');
+            new Chart(smeHelpCtx, {
+                type: 'horizontalBar',
+                data: {
+                    labels: ['Admin Time Saved', 'Profit Leakage Identified', 'Loan Approval Rate', 'Revenue Increase'],
+                    datasets: [{
+                        axis: 'y',
+                        label: 'Impact',
+                        data: [6, 22, 350, 35],
+                        backgroundColor: [
+                            'rgba(13, 110, 253, 0.7)',
+                            'rgba(13, 110, 253, 0.7)',
+                            'rgba(13, 110, 253, 0.7)',
+                            'rgba(13, 110, 253, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(13, 110, 253, 1)',
+                            'rgba(13, 110, 253, 1)',
+                            'rgba(13, 110, 253, 1)',
+                            'rgba(13, 110, 253, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Protection Chart
+            const protectionCtx = document.getElementById('protectionChart').getContext('2d');
+            new Chart(protectionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Business Survival with CapeCredit', 'Business Failure with Traditional Methods'],
+                    datasets: [{
+                        data: [73, 27],
+                        backgroundColor: [
+                            'rgba(13, 110, 253, 0.7)',
+                            'rgba(108, 117, 125, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(13, 110, 253, 1)',
+                            'rgba(108, 117, 125, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Growth Opportunity Chart
+            const growthOpportunityCtx = document.getElementById('growthOpportunityChart').getContext('2d');
+            new Chart(growthOpportunityCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Start', '6 Months', '12 Months', '18 Months', '24 Months'],
+                    datasets: [{
+                        label: 'With CapeCredit',
+                        data: [100, 120, 150, 180, 220],
+                        borderColor: 'rgba(13, 110, 253, 1)',
+                        backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Without CapeCredit',
+                        data: [100, 105, 110, 115, 120],
+                        borderColor: 'rgba(108, 117, 125, 1)',
+                        backgroundColor: 'rgba(108, 117, 125, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Revenue Growth (Indexed)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // QR Codes (placeholder divs for now)
+            document.getElementById('investor-qr').innerHTML = 'QR Code Placeholder';
+            document.getElementById('sme-qr').innerHTML = 'QR Code Placeholder';
+
+            // Navigation
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const toggleBtn = document.getElementById('toggle-btn');
+            
+            // Initially hide all slides except the first
+            for (let i = 1; i < totalSlides; i++) {
+                slides[i].classList.add('hidden');
+            }
+            
+            // Toggle between investor and SME presentations
+            let currentPresentation = 'investor';
+            toggleBtn.addEventListener('click', function() {
+                if (currentPresentation === 'investor') {
+                    currentPresentation = 'sme';
+                    currentSlide = 8; // First SME slide index
+                } else {
+                    currentPresentation = 'investor';
+                    currentSlide = 0; // First investor slide index
+                }
+                
+                // Hide all slides
+                for (let i = 0; i < totalSlides; i++) {
+                    slides[i].classList.add('hidden');
+                }
+                
+                // Show current slide
+                slides[currentSlide].classList.remove('hidden');
+            });
+            
+            // Next button
+            nextBtn.addEventListener('click', function() {
+                slides[currentSlide].classList.add('hidden');
+                
+                if (currentPresentation === 'investor') {
+                    // If at the end of investor slides, go to first SME slide
+                    if (currentSlide >= 7) {
+                        currentSlide = 8;
+                        currentPresentation = 'sme';
+                    } else {
+                        currentSlide++;
+                    }
+                } else {
+                    // If at the end of SME slides, loop back to first SME slide
+                    if (currentSlide >= totalSlides - 1) {
+                        currentSlide = 8;
+                    } else {
+                        currentSlide++;
+                    }
+                }
+                
+                slides[currentSlide].classList.remove('hidden');
+            });
+            
+            // Previous button
+            prevBtn.addEventListener('click', function() {
+                slides[currentSlide].classList.add('hidden');
+                
+                if (currentPresentation === 'investor') {
+                    // If at the beginning of investor slides, loop back to last investor slide
+                    if (currentSlide <= 0) {
+                        currentSlide = 7;
+                    } else {
+                        currentSlide--;
+                    }
+                } else {
+                    // If at the beginning of SME slides, go to last investor slide
+                    if (currentSlide <= 8) {
+                        currentSlide = 7;
+                        currentPresentation = 'investor';
+                    } else {
+                        currentSlide--;
+                    }
+                }
+                
+                slides[currentSlide].classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

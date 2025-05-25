@@ -1,0 +1,290 @@
+/* WEF-Style Presentation CSS */
+:root {
+  /* WEF color palette */
+  --wef-blue: #0d6efd;
+  --wef-blue-dark: #0a58ca;
+  --wef-blue-light: #6ea8fe;
+  --wef-blue-lighter: #cfe2ff;
+  --wef-white: #ffffff;
+  --wef-gray: #6c757d;
+  --wef-gray-light: #dee2e6;
+  --wef-gray-dark: #343a40;
+  --wef-accent: #0dcaf0;
+  
+  /* Typography */
+  --wef-font: 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+  font-family: var(--wef-font);
+  margin: 0;
+  padding: 0;
+  background-color: var(--wef-white);
+  color: var(--wef-gray-dark);
+  line-height: 1.6;
+}
+
+.slide-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.slide {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.slide-logo {
+  height: 40px;
+}
+
+.slide-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--wef-blue);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.5px;
+}
+
+.slide-subtitle {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--wef-gray);
+  margin-bottom: 2rem;
+}
+
+.slide-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slide-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--wef-gray);
+  padding-top: 1rem;
+  border-top: 1px solid var(--wef-gray-light);
+}
+
+/* Chart styles */
+.chart-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  height: 400px;
+}
+
+.data-point {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.data-number {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--wef-blue);
+  margin-right: 1rem;
+}
+
+.data-label {
+  font-size: 1.2rem;
+  color: var(--wef-gray-dark);
+}
+
+.data-source {
+  font-size: 0.8rem;
+  color: var(--wef-gray);
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+/* Minimalist bar chart */
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.bar-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.bar-label {
+  width: 30%;
+  font-size: 1rem;
+  text-align: right;
+  padding-right: 1rem;
+}
+
+.bar-container {
+  width: 60%;
+  background-color: var(--wef-gray-light);
+  height: 30px;
+  position: relative;
+}
+
+.bar {
+  height: 100%;
+  background-color: var(--wef-blue);
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.bar-value {
+  width: 10%;
+  font-size: 1rem;
+  text-align: left;
+  padding-left: 1rem;
+}
+
+/* Comparison chart */
+.comparison-chart {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.comparison-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 45%;
+}
+
+.comparison-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.comparison-content {
+  width: 100%;
+  border: 1px solid var(--wef-gray-light);
+  padding: 1.5rem;
+  border-radius: 4px;
+}
+
+/* QR code */
+.qr-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem auto;
+}
+
+.qr-code {
+  width: 150px;
+  height: 150px;
+  margin-right: 2rem;
+}
+
+.qr-text {
+  max-width: 300px;
+}
+
+/* Navigation */
+.slide-nav {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  z-index: 100;
+}
+
+.nav-button {
+  width: 40px;
+  height: 40px;
+  background-color: var(--wef-blue);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .slide-title {
+    font-size: 2rem;
+  }
+  
+  .slide-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .data-number {
+    font-size: 2rem;
+  }
+  
+  .bar-chart {
+    margin: 1rem auto;
+  }
+  
+  .bar-label {
+    width: 40%;
+    font-size: 0.9rem;
+  }
+  
+  .bar-container {
+    width: 50%;
+  }
+  
+  .bar-value {
+    width: 10%;
+    font-size: 0.9rem;
+  }
+}
+
+/* Slide transitions */
+.slide {
+  transition: transform 0.5s ease;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Print styles */
+@media print {
+  .slide {
+    page-break-after: always;
+    height: 100vh;
+  }
+  
+  .slide-nav {
+    display: none;
+  }
+}

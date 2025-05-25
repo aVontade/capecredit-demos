@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapeCredit - Financial Inclusion for Informal Businesses</title>
+    <meta name="description" content="AI-powered financial inclusion tool for informal businesses in Cape Town">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Custom styles */
+        .offline-indicator {
+            display: none;
+        }
+        body.offline .offline-indicator {
+            display: block;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #2563eb;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Language-specific fonts */
+        .lang-en {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .lang-af {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .lang-xh {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        /* Low-bandwidth mode */
+        body.low-bandwidth img {
+            filter: blur(0px);
+            transition: filter 0.3s;
+        }
+        body.low-bandwidth .bg-gradient-to-r {
+            background: #f3f4f6 !important;
+        }
+        /* Accessibility */
+        body.high-contrast {
+            filter: contrast(1.5);
+        }
+        body.large-text {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 lang-en">
+    <!-- Offline indicator -->
+    <div class="offline-indicator bg-yellow-100 text-yellow-800 px-4 py-2 text-center">
+        <i class="fas fa-wifi-slash mr-2"></i> You're currently offline. Some features may be limited.
+    </div>
+
+    <!-- App Shell -->
+    <div id="app-shell" class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-md">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center">
+                    <img src="images/logo-placeholder.png" alt="CapeCredit Logo" class="h-10 w-auto mr-3">
+                    <h1 class="text-xl font-bold text-blue-600">CapeCredit</h1>
+                </div>
+                <div class="flex items-center">
+                    <button id="language-toggle" class="p-2 rounded-full hover:bg-gray-100 mr-2">
+                        <i class="fas fa-globe"></i>
+                    </button>
+                    <div id="user-menu" class="relative">
+                        <button id="user-menu-button" class="flex items-center focus:outline-none">
+                            <div class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                                <span id="user-initials">JD</span>
+                            </div>
+                        </button>
+                        <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                            <a href="#profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                            <a href="#settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <!-- Login/Register Screen (initially visible) -->
+            <div id="auth-screen" class="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600 py-12 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-center">
+                        <img src="images/logo-placeholder.png" alt="CapeCredit Logo" class="mx-auto h-16 w-auto">
+                        <h2 class="mt-6 text-3xl font-extrabold text-gray-900">CapeCredit</h2>
+                        <p class="mt-2 text-sm text-gray-600">Financial inclusion for your business</p>
+                    </div>
+                    
+                    <div class="mt-8 space-y-6">
+                        <div class="flex justify-center space-x-4">
+                            <button id="login-tab" class="px-4 py-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600">Login</button>
+                            <button id="register-tab" class="px-4 py-2 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300">Register</button>
+                        </div>
+                        
+                        <!-- Login Form -->
+                        <form id="login-form" class="mt-8 space-y-6">
+                            <div class="rounded-md shadow-sm -space-y-px">
+                                <div>
+                                    <label for="login-phone" class="sr-only">Phone Number</label>
+                                    <input id="login-phone" name="phone" type="tel" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Phone Number">
+                                </div>
+                                <div>
+                                    <label for="login-password" class="sr-only">Password</label>
+                                    <input id="login-password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Password">
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
+                                </div>
+
+                                <div class="text-sm">
+                                    <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Forgot password?</a>
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    Login
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <!-- Register Form (initially hidden) -->
+                        <form id="register-form" class="mt-8 space-y-6 hidden">
+                            <div class="rounded-md shadow-sm -space-y-px">
+                                <div>
+                                    <label for="register-business-name" class="sr-only">Business Name</label>
+                                    <input id="register-business-name" name="business-name" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Business Name">
+                                </div>
+                                <div>
+                                    <label for="register-phone" class="sr-only">Phone Number</label>
+                                    <input id="register-phone" name="phone" type="tel" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Phone Number">
+                                </div>
+                                <div>
+                                    <label for="register-business-type" class="sr-only">Business Type</label>
+                                    <select id="register-business-type" name="business-type" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm">
+                                        <option value="" disabled selected>Select Business Type</option>
+                                        <option value="retail">Retail</option>
+                                        <option value="service">Service</option>
+                                        <option value="manufacturing">Manufacturing</option>
+                                        <option value="food">Food & Beverage</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="register-password" class="sr-only">Password</label>
+                                    <input id="register-password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" placeholder="Password">
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    Register
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main App (initially hidden) -->
+            <div id="main-app" class="hidden">
+                <!-- Dashboard -->
+                <div id="dashboard-screen" class="container mx-auto px-4 py-6">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Dashboard</h2>
+                        <p class="text-gray-600">Welcome back, <span id="user-business-name">Your Business</span></p>
+                    </div>
+                    
+                    <!-- Credit Score Card -->
+                    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold">Business Credit Score</h3>
+                            <button id="refresh-score" class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="relative w-32 h-32 mb-4 md:mb-0 md:mr-6">
+                                <svg class="w-full h-full" viewBox="0 0 36 36">
+                                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#eee" stroke-width="3" />
+                                    <path id="credit-score-circle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#4ade80" stroke-width="3" stroke-dasharray="75, 100" />
+                                    <text x="18" y="20.35" class="credit-score-text text-5xl font-bold" text-anchor="middle" fill="#374151">750</text>
+                                </svg>
+                            </div>
+                            <div class="flex-grow">
+                                <div class="mb-2">
+                                    <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Low Risk</span>
+                                    <span class="text-sm text-gray-500 ml-2">Last updated: <span id="score-date">May 15, 2025</span></span>
+                                </div>
+                                <p class="text-gray-700 mb-3">Your business shows strong financial health and qualifies for financing options.</p>
+                                <div class="grid grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <p class="text-gray-500">Recommended Credit</p>
+                                        <p class="font-semibold">R15,000</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-500">Score Change</p>
+                                        <p class="font-semibold text-green-600">+25 <i class="fas fa-arrow-up"></i></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <h4 class="font-medium text-gray-700 mb-2">Score Components</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-xs text-gray-700">Transaction Consistency</span>
+                                        <span class="text-xs font-medium text-gray-700">85%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-xs text-gray-700">Business Longevity</span>
+                                        <span class="text-xs font-medium text-gray-700">60%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 60%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-xs text-gray-700">Payment Reliability</span>
+                                        <span class="text-xs font-medium text-gray-700">90%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-xs text-gray-700">Cash Flow Stability</span>
+                                        <span class="text-xs font-medium text-gray-700">75%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-xs text-gray-700">Business Growth</span>
+                                        <span class="text-xs font-medium text-gray-700">70%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 70%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-xs text-gray-700">Formalization Progress</span>
+                                        <span class="text-xs font-medium text-gray-700">40%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 40%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <a href="#credit-detail" class="text-blue-600 hover:text-blue-800 text-sm font-medium">View detailed credit report <i class="fas fa-chevron-right ml-1"></i></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Financial Summary -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold">Income</h3>
+                                <span class="text-green-600"><i class="fas fa-arrow-up"></i> 12%</span>
+                            </div>
+                            <p class="text-3xl font-bold mb-2">R12,450</p>
+                            <p class="text-sm text-gray-500">Last 30 days</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold">Expenses</h3>
+                                <span class="text-red-600"><i class="fas fa-arrow-up"></i> 5%</span>
+                            </div>
+                            <p class="text-3xl font-bold mb-2">R8,320</p>
+                            <p class="text-sm text-gray-500">Last 30 days</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold">Net Profit</h3>
+                                <span class="text-green-600"><i class="fas fa-arrow-up"></i> 8%</span>
+                            </div>
+                            <p class="text-3xl font-bold mb-2">R4,130</p>
+                            <p class="text-sm text-gray-500">Last 30 days</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Cash Flow Chart -->
+                    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold">Cash Flow</h3>
+                            <div>
+                                <select id="cash-flow-period" class="text-sm border-gray-300 rounded-md">
+                                    <option value="7days">Last 7 days</option>
+                                    <option value="30days" selected>Last 30 days</option>
+                                    <option value="90days">Last 90 days</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="h-64">
+                            <canvas id="cash-flow-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Transactions & Financing Options -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Recent Transactions -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold">Recent Transactions</h3>
+                                <a href="#transactions" class="text-blue-600 hover:text-blue-800 text-sm">View all</a>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="flex items-center p-3 hover:bg-gray-50 rounded-lg">
+                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-500 mr-4">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <p class="font-medium">Sale - Retail Products</p>
+                                        <p class="text-sm text-gray-500">May 16, 2025</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-medium text-green-600">+R850</p>
+                                        <p class="text-xs text-gray-500">Cash</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center p-3 hover:bg-gray-50 rounded-lg">
+                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-red-100 flex items-center justify-center text-red-500 mr-4">
+                                        <i class="fas fa-arrow-up"></i>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <p class="font-medium">Expense - Inventory</p>
+                                        <p class="text-sm text-gray-500">May 15, 2025</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-medium text-red-600">-R1,200</p>
+                                        <p class="text-xs text-gray-500">Mobile Money</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center p-3 hover:bg-gray-50 rounded-lg">
+                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-500 mr-4">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <p class="font-medium">Sale - Services</p>
+                                        <p class="text-sm text-gray-500">May 14, 2025</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-medium text-green-600">+R450</p>
+                                        <p class="text-xs text-gray-500">Cash</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center p-3 hover:bg-gray-50 rounded-lg">
+                                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-red-100 flex items-center justify-center text-red-500 mr-4">
+                                        <i class="fas fa-arrow-up"></i>
+                                    </div>
+                                    <div class="flex-grow">
+                                        <p class="font-medium">Expense - Utilities</p>
+                                        <p class="text-sm text-gray-500">May 12, 2025</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-medium text-red-600">-R320</p>
+                                        <p class="text-xs text-gray-500">Cash</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Financing Options -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold">Financing Options</h3>
+                                <a href="#financing" class="text-blue-600 hover:text-blue-800 text-sm">View all</a>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-medium">Business Growth Loan</h4>
+                                        <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">95% Match</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2 text-sm mb-3">
+                                        <div>
+                                            <p class="text-gray-500">Amount</p>
+                                            <p class="font-semibold">Up to R15,000</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Interest Rate</p>
+                                            <p class="font-semibold">12.5%</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Term</p>
+                                            <p class="font-semibold">24 months</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Monthly Payment</p>
+                                            <p class="font-semibold">~R705</p>
+                                        </div>
+                                    </div>
+                                    <button class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md">
+                                        Apply Now
+                                    </button>
+                                </div>
+                                <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-medium">Working Capital Loan</h4>
+                                        <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">85% Match</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2 text-sm mb-3">
+                                        <div>
+                                            <p class="text-gray-500">Amount</p>
+                                            <p class="font-semibold">Up to R8,000</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Interest Rate</p>
+                                            <p class="font-semibold">15.0%</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Term</p>
+                                            <p class="font-semibold">12 months</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Monthly Payment</p>
+                                            <p class="font-semibold">~R725</p>
+                                        </div>
+                                    </div>
+                                    <button class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md">
+                                        Apply Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bg-white border-t border-gray-200 fixed bottom-0 inset-x-0 z-10 hidden" id="bottom-nav">
+            <div class="flex justify-around">
+                <a href="#dashboard" class="flex flex-col items-center py-2 px-3 text-blue-600">
+                    <i class="fas fa-home text-xl"></i>
+                    <span class="text-xs mt-1">Home</span>
+                </a>
+                <a href="#transactions" class="flex flex-col items-center py-2 px-3 text-gray-600 hover:text-blue-600">
+                    <i class="fas fa-exchange-alt text-xl"></i>
+                    <span class="text-xs mt-1">Transactions</span>
+                </a>
+                <a href="#financing" class="flex flex-col items-center py-2 px-3 text-gray-600 hover:text-blue-600">
+                    <i class="fas fa-hand-holding-usd text-xl"></i>
+                    <span class="text-xs mt-1">Financing</span>
+                </a>
+                <a href="#formalization" class="flex flex-col items-center py-2 px-3 text-gray-600 hover:text-blue-600">
+                    <i class="fas fa-building text-xl"></i>
+                    <span class="text-xs mt-1">Formalize</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Language Selector Modal -->
+    <div id="language-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 max-w-sm w-full">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Select Language</h3>
+                <button id="close-language-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-2">
+                <button class="w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 flex items-center" data-lang="en">
+                    <span class="w-8">🇿🇦</span> English
+                </button>
+                <button class="w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 flex items-center" data-lang="af">
+                    <span class="w-8">🇿🇦</span> Afrikaans
+                </button>
+                <button class="w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 flex items-center" data-lang="xh">
+                    <span class="w-8">🇿🇦</span> isiXhosa
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Transaction Modal -->
+    <div id="add-transaction-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Add Transaction</h3>
+                <button id="close-transaction-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="add-transaction-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Transaction Type</label>
+                    <div class="flex space-x-4">
+                        <label class="flex items-center">
+                            <input type="radio" name="transaction-type" value="income" class="h-4 w-4 text-blue-600" checked>
+                            <span class="ml-2 text-sm text-gray-700">Income/Sale</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="transaction-type" value="expense" class="h-4 w-4 text-blue-600">
+                            <span class="ml-2 text-sm text-gray-700">Expense/Purchase</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label for="transaction-amount" class="block text-sm font-medium text-gray-700 mb-1">Amount (R)</label>
+                    <input type="number" id="transaction-amount" name="amount" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="0.00" required>
+                </div>
+                <div>
+                    <label for="transaction-category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <select id="transaction-category" name="category" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                        <option value="" disabled selected>Select category</option>
+                        <option value="sales">Sales</option>
+                        <option value="services">Services</option>
+                        <option value="inventory">Inventory</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="rent">Rent</option>
+                        <option value="wages">Wages</option>
+                        <option value="transport">Transport</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="transaction-description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <input type="text" id="transaction-description" name="description" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Transaction description">
+                </div>
+                <div>
+                    <label for="transaction-date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                    <input type="date" id="transaction-date" name="date" class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                </div>
+                <div>
+                    <label for="transaction-payment" class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
+                    <select id="transaction-payment" name="payment" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option value="cash">Cash</option>
+                        <option value="mobile_money">Mobile Money</option>
+                        <option value="bank_transfer">Bank Transfer</option>
+                        <option value="credit">Credit/Debt</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="flex items-center">
+                        <input type="checkbox" id="has-receipt" name="has-receipt" class="h-4 w-4 text-blue-600">
+                        <span class="ml-2 text-sm text-gray-700">I have a receipt</span>
+                    </label>
+                </div>
+                <div id="receipt-upload" class="hidden">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload Receipt</label>
+                    <div class="border-2 border-dashed border-gray-300 rounded-md p-4 text-center">
+                        <i class="fas fa-camera text-gray-400 text-2xl mb-2"></i>
+                        <p class="text-sm text-gray-500">Take a photo or upload receipt</p>
+                        <input type="file" id="receipt-file" name="receipt" class="hidden" accept="image/*">
+                        <button type="button" id="receipt-button" class="mt-2 px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md text-sm">
+                            Select File
+                        </button>
+                    </div>
+                </div>
+                <div class="pt-2">
+                    <button type="submit" class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md">
+                        Save Transaction
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Service Worker Registration -->
+    <script>
+        // Register service worker for offline functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+        
+        // Check online/offline status
+        function updateOnlineStatus() {
+            if (navigator.onLine) {
+                document.body.classList.remove('offline');
+            } else {
+                document.body.classList.add('offline');
+            }
+        }
+        
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus();
+    </script>
+
+    <!-- Demo Data and UI Interactions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Demo user data
+            const demoUser = {
+                id: '12345',
+                businessName: 'Cape Town Crafts',
+                businessType: 'retail',
+                phoneNumber: '+27123456789',
+                creditScore: 750,
+                riskLevel: 'low',
+                scoreDate: 'May 15, 2025',
+                recommendedCredit: 15000,
+                scoreChange: 25,
+                components: {
+                    transactionConsistency: 85,
+                    businessLongevity: 60,
+                    paymentReliability: 90,
+                    cashFlowStability: 75,
+                    businessGrowth: 70,
+                    formalizationProgress: 40
+                }
+            };
+            
+            // Demo transactions
+            const demoTransactions = [
+                {
+                    type: 'income',
+                    amount: 850,
+                    description: 'Sale - Retail Products',
+                    date: 'May 16, 2025',
+                    paymentMethod: 'Cash',
+                    category: 'sales'
+                },
+                {
+                    type: 'expense',
+                    amount: 1200,
+                    description: 'Expense - Inventory',
+                    date: 'May 15, 2025',
+                    paymentMethod: 'Mobile Money',
+                    category: 'inventory'
+                },
+                {
+                    type: 'income',
+                    amount: 450,
+                    description: 'Sale - Services',
+                    date: 'May 14, 2025',
+                    paymentMethod: 'Cash',
+                    category: 'services'
+                },
+                {
+                    type: 'expense',
+                    amount: 320,
+                    description: 'Expense - Utilities',
+                    date: 'May 12, 2025',
+                    paymentMethod: 'Cash',
+                    category: 'utilities'
+                }
+            ];
+            
+            // Demo cash flow data
+            const demoCashFlow = {
+                labels: ['May 1', 'May 5', 'May 10', 'May 15', 'May 20', 'May 25', 'May 30'],
+                income: [1200, 850, 1500, 900, 1300, 1100, 1400],
+                expenses: [800, 600, 950, 700, 850, 500, 900]
+            };
+            
+            // Initialize cash flow chart
+            const cashFlowCtx = document.getElementById('cash-flow-chart').getContext('2d');
+            const cashFlowChart = new Chart(cashFlowCtx, {
+                type: 'line',
+                data: {
+                    labels: demoCashFlow.labels,
+                    datasets: [
+                        {
+                            label: 'Income',
+                            data: demoCashFlow.income,
+                            borderColor: '#4ade80',
+                            backgroundColor: 'rgba(74, 222, 128, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Expenses',
+                            data: demoCashFlow.expenses,
+                            borderColor: '#f87171',
+                            backgroundColor: 'rgba(248, 113, 113, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Login/Register tab switching
+            document.getElementById('login-tab').addEventListener('click', function() {
+                document.getElementById('login-form').classList.remove('hidden');
+                document.getElementById('register-form').classList.add('hidden');
+                document.getElementById('login-tab').classList.add('text-blue-600', 'border-blue-600');
+                document.getElementById('login-tab').classList.remove('text-gray-500', 'border-transparent');
+                document.getElementById('register-tab').classList.add('text-gray-500', 'border-transparent');
+                document.getElementById('register-tab').classList.remove('text-blue-600', 'border-blue-600');
+            });
+            
+            document.getElementById('register-tab').addEventListener('click', function() {
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('register-form').classList.remove('hidden');
+                document.getElementById('register-tab').classList.add('text-blue-600', 'border-blue-600');
+                document.getElementById('register-tab').classList.remove('text-gray-500', 'border-transparent');
+                document.getElementById('login-tab').classList.add('text-gray-500', 'border-transparent');
+                document.getElementById('login-tab').classList.remove('text-blue-600', 'border-blue-600');
+            });
+            
+            // Login form submission (demo)
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // In a real app, this would validate credentials with the backend
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('main-app').classList.remove('hidden');
+                document.getElementById('bottom-nav').classList.remove('hidden');
+                
+                // Update UI with demo user data
+                document.getElementById('user-business-name').textContent = demoUser.businessName;
+                document.getElementById('user-initials').textContent = demoUser.businessName.split(' ').map(n => n[0]).join('');
+                
+                // Set credit score circle
+                const scoreCircle = document.getElementById('credit-score-circle');
+                const scoreText = document.querySelector('.credit-score-text');
+                const scoreValue = demoUser.creditScore;
+                const dashArray = (scoreValue / 1000) * 100;
+                
+                scoreCircle.setAttribute('stroke-dasharray', `${dashArray}, 100`);
+                scoreText.textContent = scoreValue;
+                
+                // Set score color based on risk level
+                let scoreColor;
+                if (demoUser.riskLevel === 'low') {
+                    scoreColor = '#4ade80'; // green
+                } else if (demoUser.riskLevel === 'medium') {
+                    scoreColor = '#facc15'; // yellow
+                } else {
+                    scoreColor = '#f87171'; // red
+                }
+                scoreCircle.setAttribute('stroke', scoreColor);
+            });
+            
+            // Register form submission (demo)
+            document.getElementById('register-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // In a real app, this would register the user with the backend
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('main-app').classList.remove('hidden');
+                document.getElementById('bottom-nav').classList.remove('hidden');
+                
+                // Update UI with form data
+                const businessName = document.getElementById('register-business-name').value;
+                document.getElementById('user-business-name').textContent = businessName;
+                document.getElementById('user-initials').textContent = businessName.split(' ').map(n => n[0]).join('');
+            });
+            
+            // User menu toggle
+            document.getElementById('user-menu-button').addEventListener('click', function() {
+                const dropdown = document.getElementById('user-dropdown');
+                dropdown.classList.toggle('hidden');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                const dropdown = document.getElementById('user-dropdown');
+                const button = document.getElementById('user-menu-button');
+                if (!dropdown.contains(e.target) && !button.contains(e.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+            
+            // Language modal
+            document.getElementById('language-toggle').addEventListener('click', function() {
+                document.getElementById('language-modal').classList.remove('hidden');
+            });
+            
+            document.getElementById('close-language-modal').addEventListener('click', function() {
+                document.getElementById('language-modal').classList.add('hidden');
+            });
+            
+            // Language selection
+            document.querySelectorAll('[data-lang]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    document.body.className = document.body.className.replace(/lang-\w+/, '');
+                    document.body.classList.add(`lang-${lang}`);
+                    document.getElementById('language-modal').classList.add('hidden');
+                    
+                    // In a real app, this would load translated content
+                    // For demo, we'll just close the modal
+                });
+            });
+            
+            // Receipt checkbox toggle
+            document.getElementById('has-receipt').addEventListener('change', function() {
+                if (this.checked) {
+                    document.getElementById('receipt-upload').classList.remove('hidden');
+                } else {
+                    document.getElementById('receipt-upload').classList.add('hidden');
+                }
+            });
+            
+            // Receipt file button
+            document.getElementById('receipt-button').addEventListener('click', function() {
+                document.getElementById('receipt-file').click();
+            });
+            
+            // Set today's date as default for transaction form
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('transaction-date').value = today;
+            
+            // Add transaction form submission (demo)
+            document.getElementById('add-transaction-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // In a real app, this would save the transaction to the backend
+                document.getElementById('add-transaction-modal').classList.add('hidden');
+                
+                // Show success message or update UI
+                alert('Transaction saved successfully!');
+            });
+            
+            // Bottom navigation
+            document.querySelectorAll('#bottom-nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Update active state
+                    document.querySelectorAll('#bottom-nav a').forEach(l => {
+                        l.classList.remove('text-blue-600');
+                        l.classList.add('text-gray-600');
+                    });
+                    this.classList.remove('text-gray-600');
+                    this.classList.add('text-blue-600');
+                    
+                    // In a real app, this would navigate to different screens
+                    // For demo, we'll just update the active state
+                });
+            });
+        });
+    </script>
+</body>
+</html>
